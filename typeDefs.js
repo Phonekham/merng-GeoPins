@@ -8,6 +8,22 @@ module.exports = gql`
     picture: String
   }
 
+  type Comment {
+    _id: ID
+  }
+
+  type Pin {
+    _id: ID
+    createdAt: String
+    title: String
+    content: String
+    image: String
+    latitude: Float
+    longitude: Float
+    author: User
+    comments: [Comment]
+  }
+
   type Query {
     me: User
   }
