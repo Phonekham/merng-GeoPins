@@ -36,6 +36,7 @@ const Login = ({ classes }) => {
         variant="h3"
         gutterBottom
         noWrap
+        butt
         style={{ color: "rgb(66,133,244)" }}
       >
         Welecome
@@ -44,6 +45,7 @@ const Login = ({ classes }) => {
         clientId="1072323787876-rh2ouk6thv0jg4mt2btbl5ljsjjnm705.apps.googleusercontent.com"
         onSuccess={onSuccess}
         isSignedIn={true}
+        buttonText="Login With Google"
         onFailure={onFailure}
         theme="dark"
       />
