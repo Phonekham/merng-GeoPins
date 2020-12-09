@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import axios from "axios";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -7,6 +8,7 @@ import AddAPhotoIcon from "@material-ui/icons/AddAPhotoTwoTone";
 import LandscapeIcon from "@material-ui/icons/LandscapeOutlined";
 import ClearIcon from "@material-ui/icons/Clear";
 import SaveIcon from "@material-ui/icons/SaveTwoTone";
+
 import Context from "../../context";
 
 const CreatePin = ({ classes }) => {
@@ -14,10 +16,10 @@ const CreatePin = ({ classes }) => {
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
   const [content, setContent] = useState("");
-  console.log(title, image, content);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = await handleImageUpload();
   };
 
   const handleDeleteDraft = () => {
@@ -25,6 +27,18 @@ const CreatePin = ({ classes }) => {
     setImage("");
     setContent("");
     dispatch({ type: "DELETE_DRAFT" });
+  };
+
+  const handleImageUpload = async () => {
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "geopins");
+    data.append("cloud_name", "dmxp0i0sh");
+    const res = await axios.post(
+      "https://api.cloudinary.com/v1_1/dmxp0i0sh/image/upload",
+      data
+    );
+    return res.data.url;
   };
 
   return (
