@@ -12,6 +12,7 @@ import SaveIcon from "@material-ui/icons/SaveTwoTone";
 
 import Context from "../../context";
 import { CREATE_PIN_MUTATION } from "../../graphql/mutations";
+import { UniqueInputFieldNamesRule } from "graphql";
 
 const CreatePin = ({ classes }) => {
   const { state, dispatch } = useContext(Context);
@@ -23,6 +24,7 @@ const CreatePin = ({ classes }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setSubmitting(true);
       const idToken = window.gapi.auth2
         .getAuthInstance()
         .currentUser.get()
@@ -46,6 +48,7 @@ const CreatePin = ({ classes }) => {
         variables
       );
       handleDeleteDraft();
+      setSubmitting(false);
       console.log("pin created", { createPin });
     } catch (error) {
       setSubmitting(false);
