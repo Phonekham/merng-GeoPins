@@ -1,6 +1,5 @@
 import React, { useContext, useState } from "react";
 import axios from "axios";
-import { GraphQLClient } from "graphql-request";
 import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -12,9 +11,10 @@ import SaveIcon from "@material-ui/icons/SaveTwoTone";
 
 import Context from "../../context";
 import { CREATE_PIN_MUTATION } from "../../graphql/mutations";
-import { UniqueInputFieldNamesRule } from "graphql";
+import { useClient } from "../../client";
 
 const CreatePin = ({ classes }) => {
+  const client = useClient();
   const { state, dispatch } = useContext(Context);
   const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
@@ -25,15 +25,6 @@ const CreatePin = ({ classes }) => {
     e.preventDefault();
     try {
       setSubmitting(true);
-      const idToken = window.gapi.auth2
-        .getAuthInstance()
-        .currentUser.get()
-        .getAuthResponse().id_token;
-      const client = new GraphQLClient("http://localhost:4000/graphql", {
-        headers: {
-          authorization: idToken,
-        },
-      });
       const { latitude, longitude } = state.draft;
       const url = await handleImageUpload();
       const variables = {
@@ -135,7 +126,7 @@ const CreatePin = ({ classes }) => {
           className={classes.button}
           variant="contained"
           color="secondary"
-          disabled={!title.trim() || !content.trim() || !image}
+          disabled={!title.trim() || !content.trim() || !image || submitting}
           onClick={handleSubmit}
         >
           Submit
