@@ -41,6 +41,7 @@ const CreatePin = ({ classes }) => {
       handleDeleteDraft();
       setSubmitting(false);
       console.log("pin created", { createPin });
+      dispatch({ type: "CREATE_PIN", payload: createPin });
     } catch (error) {
       setSubmitting(false);
       console.log(error);
